@@ -10,5 +10,4 @@
 # License
 
 
-
-「Fantasy」移植自PCDotFan 的「Aragaki」 Bitcron 主题 「[Hello](https://github.com/pcdotfan/Aragaki)」
+「Fantasy」移植自PCDotFan 的 Bitcron 主题 「[Aragaki](https://github.com/pcdotfan/Aragaki)」
