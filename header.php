@@ -35,7 +35,7 @@
 					<ul class="mixed_site_nav site_nav sm sm-base">
 						<li><a  href="/" class="selected active current nav__item">首页</a>
 						</li>
-						<?php $this->widget('Widget_Contents_Page_List')->parse('<li><a href="{permalink}" class=" nav__item">{title}</a></li>'); ?>
+						<?php $this->widget('Widget_Contents_Page_List')->parse('<li><a href="{permalink}" class="selected active current nav__item">{title}</a></li>'); ?>
 						<li><a href="<?php $this->options->feedUrl(); ?>" class=" nav__item">订阅</a></li>
 					</ul>
 					<div class="clear clear_nav_inline_end">
