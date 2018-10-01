@@ -28,7 +28,7 @@ $defaults = array(
 'number' => 12,
 'before' => '<ul>',
 'after' => '</ul>',
-'xformat' => '<li><a href="{permalink}">{title}</a>
+'xformat' => '<li style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" title="{title}"><a href="{permalink}">{title}</a>
  </li>'
 );
 $db = Typecho_Db::get();
@@ -39,13 +39,13 @@ $sql = $db->select()->from('table.contents')
 ->order('RAND()');
 $result = $db->fetchAll($sql);
 echo $defaults['before'];
+
 foreach($result as $val){
 $val = Typecho_Widget::widget('Widget_Abstract_Contents')->filter($val);
 echo str_replace(array('{permalink}', '{title}'),array($val['permalink'], $val['title']), $defaults['xformat']);
 }
 echo $defaults['after'];
 }
-
 
 function getCommentAt($coid){
     $db   = Typecho_Db::get();
