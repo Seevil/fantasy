@@ -2,7 +2,7 @@
 /**
  * Fantasy 是一个极简自适应博客主题
  * 经作者同意由BITCRON博客Aragaki主题移植而来。
- * 又改名为Fantasy取意“清梦”源自“ 醉后不知天在水，满船清梦压星河。” 意图用来描绘现状。
+ * 又改名为Fantasy取义“清梦”源自“ 醉后不知天在水，满船清梦压星河。” 意图用来描绘现状。
  * @package Fantasy Theme
  * @author Intern
  * @version 1.0.0
