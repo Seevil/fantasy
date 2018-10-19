@@ -13,17 +13,24 @@ function threadedComments($comments, $options) {
 
     $commentLevelClass = $comments->levels > 0 ? ' comment-child' : ' comment-parent';
 ?>
-<li id="<?php $comments->sequence(); ?>" class="comment">
+<li id="<?php $comments->theId(); ?>" class="comment">
 		<div class="comment_wrapper">
 		<div class="author">
-		<?php
-            $host = 'https://cdn.v2ex.com/';
-            $url = '/gravatar/';
-            $size = '48';
+		            <?php
+            //头像CDN by Rich
+            $host = 'https://gravatar.loli.net'; 
+            $url = '/avatar/'; 
             $rating = Helper::options()->commentsAvatarRating;
             $hash = md5(strtolower($comments->mail));
-            $avatar = $host . $url . $hash . '?s=' . $size . '&r=' . $rating . '&d=';
-        ?>
+			$email = strtolower($comments->mail);
+			$qq=str_replace('@qq.com','',$email);
+			if(strstr($email,"qq.com") && is_numeric($qq) && strlen($qq) < 11 && strlen($qq) > 4)
+			{
+			$avatar = '//q.qlogo.cn/g?b=qq&nk='.$qq.'&s=48';
+			}else{
+			  $avatar = $host . $url . $hash . '?s=48' . '&r=' . $rating . '&d=mm';
+			}       
+            ?>
 							  <div class="avatar"><img src="<?php echo $avatar ?>">
 							  </div>
 							  <div class="author-name">
@@ -33,7 +40,7 @@ function threadedComments($comments, $options) {
 							  <div class="author-date"><small><?php $comments->date('Y-m-d H:i'); ?></small>
 							  </div>
 							</div>
-							<div class="comment_content"><div class="p_part"><p><?php $comments->content(); ?></p></div></div>
+							<div class="comment_content"><div class="p_part olfont"><p><?php $comments->content(); ?></p></div></div>
 							<?php if ($comments->children) { ?>
 							<?php $comments->threadedComments($options); ?>
 							<?php } ?>
@@ -88,10 +95,10 @@ function threadedComments($comments, $options) {
                                                     <input type="text" name="author"  value="<?php $this->remember('author'); ?>" required placeholder="昵称"/>
                                                 </li>
                                                 <li>
-                                                    <input type="text" name="mail" value="<?php $this->remember('mail'); ?>" placeholder="邮箱"/>
+                                                    <input type="text" name="mail" value="<?php $this->remember('mail'); ?>"<?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?> placeholder="邮箱"/>
                                                 </li>
                                                 <li>
-                                                    <input type="text" name="url" value="<?php $this->remember('url'); ?>" placeholder="网站"/>
+                                                    <input type="text" name="url" value="<?php $this->remember('url'); ?>" <?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?> placeholder="网站"/>
                                                 </li>
                                             </ul>
                                             <input type="submit" value="提交评论" class="comment_submit_button c_button"/>
