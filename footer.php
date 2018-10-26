@@ -12,7 +12,7 @@
 		<?php $this->widget('Widget_Metas_Category_List')->parse('<li><a href="{permalink}" class="">{name}<span> {count}篇</span></a></li>'); ?>
 	</ul>
 </div>
-</aside><footer><span>© 2018 <?php $this->options->title(); ?> - <a href="<?php $this->options->feedUrl();?>"><?php Typecho_Widget::widget('Widget_Stat')->to($stat); ?><?php $stat->publishedPostsNum() ?> Posts crafted</a></span><span> ♥ <a href="https://blog.shuiba.co/bitcron-theme-hello">Hello</a> & <a href="https://github.com/PCDotFan/Aragaki">Aragaki</a> By <a href="https://www.xde.io">Xingr</a></span>
+</aside><footer><span>© 2018 <?php $this->options->title(); ?> - <a href="<?php $this->options->feedUrl();?>"><?php Typecho_Widget::widget('Widget_Stat')->to($stat); ?><?php $stat->publishedPostsNum() ?> Posts crafted</a></span><span> ♥ <a href="https://blog.shuiba.co/bitcron-theme-hello">Hello</a> & <a href="https://github.com/PCDotFan/Aragaki">Aragaki</a> By <a href="https://www.xde.io/typecho/fantasy.html">Xingr</a></span>
 <div class="powered_by">
 	<span>Proudly published with</span>
 	<a href="http://typecho.org/" target="_blank">Typecho</a>

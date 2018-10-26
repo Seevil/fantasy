@@ -99,12 +99,12 @@
         reply: parent_comment_id,
       };
       if (text.length < 5) {
-        set_comment_error('min length of comment is 5!');
+        set_comment_error('评论最少需要是5个字！');
         text_dom.focus();
         return false;
       }
       if (!mail && mail_dom.length) {
-        set_comment_error('mail is required');
+        set_comment_error('邮箱不能为空');
         text_dom.focus();
         return false;
       }
