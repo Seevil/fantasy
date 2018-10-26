@@ -7,7 +7,7 @@ $this->need('header.php');
                     <h1><?php $this->category(',', false); ?></h1>
                     <div class="meta"><?php echo $this->getDescription(); ?></div>
                     <div class="info"></div>
-                    <ul>
+                    <ul class="archived-posts">
 					<?php while($this->next()): ?>
                         <li>
                             <time datetime="<?php $this->date('Y.m.j'); ?>"><?php $this->date('Y.m.j'); ?></time>
