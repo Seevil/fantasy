@@ -99,7 +99,7 @@
         reply: parent_comment_id,
       };
       if (text.length < 5) {
-        set_comment_error('评论最少需要是5个字！');
+        set_comment_error('评论最少需要5个字！');
         text_dom.focus();
         return false;
       }
