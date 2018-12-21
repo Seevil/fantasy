@@ -21,6 +21,9 @@
 <link data-n-head="true" rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="stylesheet" href="<?php $this->options->themeUrl('css/style.css'); ?>">
 <script type="text/javascript" src="<?php $this->options->themeUrl('css/jquery.js'); ?>"></script>
+<?php if ($this->options->fontshow == 'able'): ?>
+<style type="text/css">* {text-shadow : 0.01em 0.01em 0.01em #999999}</style>
+<?php endif; ?>
 </head>
 <body>
 <div class="wrapper">

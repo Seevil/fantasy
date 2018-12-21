@@ -12,6 +12,13 @@ function themeConfig($form) {
         ),
         'disable', _t('代码高亮设置'), _t('默认禁止，启用则会对 ``` 进行代码高亮'));
     $form->addInput($useHighline);
+	
+    $fontshow = new Typecho_Widget_Helper_Form_Element_Radio('fontshow',
+        array('able' => _t('启用'),
+            'disable' => _t('禁止'),
+        ),
+        'disable', _t('阅读视觉优化'), _t('默认禁止，启用则使用视觉阅读优化'));
+    $form->addInput($fontshow);
 
 }
 
