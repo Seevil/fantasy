@@ -23,7 +23,7 @@
 </footer>
 <link rel="stylesheet" href="<?php $this->options->themeUrl('css/fonts.css'); ?>">
 <?php if ($this->options->useHighline == 'able'): ?>
-<script src="https://cdn.staticfile.org/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlight.js/9.13.1/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 <?php endif; ?>
 <style type="text/css">
