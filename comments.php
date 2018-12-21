@@ -26,7 +26,7 @@ function threadedComments($comments, $options) {
 			$qq=str_replace('@qq.com','',$email);
 			if(strstr($email,"qq.com") && is_numeric($qq) && strlen($qq) < 11 && strlen($qq) > 4)
 			{
-			$avatar = '//q.qlogo.cn/g?b=qq&nk='.$qq.'&s=48';
+			$avatar = '//q3.qlogo.cn/g?b=qq&nk='.$qq.'&s=100';
 			}else{
 			  $avatar = $host . $url . $hash . '?s=48' . '&r=' . $rating . '&d=mm';
 			}       
