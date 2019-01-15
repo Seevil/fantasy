@@ -5,7 +5,7 @@
  * 又改名为Fantasy取义“清梦”源自“ 醉后不知天在水，满船清梦压星河。” 意图用来描绘现状。
  * @package Fantasy Theme
  * @author Intern
- * @version 1.0.0
+ * @version 1.2.0
  * @link https://wwww.xde.io/
  */
 

@@ -19,6 +19,12 @@ function themeConfig($form) {
         ),
         'disable', _t('阅读视觉优化'), _t('默认禁止，启用则使用视觉阅读优化'));
     $form->addInput($fontshow);
+	$random = new Typecho_Widget_Helper_Form_Element_Radio('random',
+        array('able' => _t('启用'),
+            'disable' => _t('禁止'),
+        ),
+        'disable', _t('随机文章'), _t('默认禁止，启用则不显示底部随机文章和分类'));
+    $form->addInput($random);
 
 }
 
