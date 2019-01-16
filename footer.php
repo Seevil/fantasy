@@ -1,6 +1,6 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 <aside>
-<?php if ($this->options->random == 'able'): ?>
+<?php if ($this->options->random == 'disable'): ?>
 <div class="aside-left sidebar">
 
 	<h3>随机文章</h3>

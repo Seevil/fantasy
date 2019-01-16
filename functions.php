@@ -23,7 +23,7 @@ function themeConfig($form) {
         array('able' => _t('启用'),
             'disable' => _t('禁止'),
         ),
-        'disable', _t('随机文章'), _t('默认禁止，启用则不显示底部随机文章和分类'));
+        'disable', _t('停用底部随机文章和分类显示'), _t('默认禁止，启用则不显示底部随机文章和分类'));
     $form->addInput($random);
 
 }
