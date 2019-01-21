@@ -19,12 +19,12 @@ function themeConfig($form) {
         ),
         'disable', _t('阅读视觉优化'), _t('默认禁止，启用则使用视觉阅读优化'));
     $form->addInput($fontshow);
-	$random = new Typecho_Widget_Helper_Form_Element_Radio('random',
+	$eyeshow = new Typecho_Widget_Helper_Form_Element_Radio('eyeshow',
         array('able' => _t('启用'),
             'disable' => _t('禁止'),
         ),
-        'disable', _t('停用底部随机文章和分类显示'), _t('默认禁止，启用则不显示底部随机文章和分类'));
-    $form->addInput($random);
+        'disable', _t('是否显示文章热度'), _t('默认禁止，启用则显示文章热度浏览数'));
+    $form->addInput($eyeshow);
 
 }
 
@@ -45,11 +45,17 @@ $defaults = array(
  </li>'
 );
 $db = Typecho_Db::get();
+$adapterName = $db->getAdapterName();//兼容非MySQL数据库
+if($adapterName == 'pgsql' || $adapterName == 'Pdo_Pgsql' || $adapterName == 'Pdo_SQLite' || $adapterName == 'SQLite'){
+   $order_by = 'RANDOM()';
+   }else{
+   $order_by = 'RAND()';
+ }
 $sql = $db->select()->from('table.contents')
 ->where('status = ?','publish')
 ->where('type = ?', 'post')
 ->limit($defaults['number'])
-->order('RAND()');
+->order($order_by);
 $result = $db->fetchAll($sql);
 echo $defaults['before'];
 
@@ -86,25 +92,27 @@ function get_post_view($archive)
     $prefix = $db->getPrefix();
     if (!array_key_exists('views', $db->fetchRow($db->select()->from('table.contents')))) {
         $db->query('ALTER TABLE `' . $prefix . 'contents` ADD `views` INT(10) DEFAULT 0;');
-        return 0;
+        echo 0;
+        return;
     }
     $row = $db->fetchRow($db->select('views')->from('table.contents')->where('cid = ?', $cid));
     if ($archive->is('single')) {
-        $views = Typecho_Cookie::get('extend_contents_views');
+ $views = Typecho_Cookie::get('extend_contents_views');
         if(empty($views)){
             $views = array();
         }else{
             $views = explode(',', $views);
         }
-        if(!in_array($cid,$views)){
-            $db->query($db->update('table.contents')->rows(array('views' => (int) $row['views'] + 1))->where('cid = ?', $cid));
-            array_push($views, $cid);
+if(!in_array($cid,$views)){
+       $db->query($db->update('table.contents')->rows(array('views' => (int) $row['views'] + 1))->where('cid = ?', $cid));
+array_push($views, $cid);
             $views = implode(',', $views);
             Typecho_Cookie::set('extend_contents_views', $views); //记录查看cookie
         }
     }
-    return $row['views'];
+    echo $row['views'];
 }
+
 //统计当前分类和子分类文章总数
 function fenleinum($id){
 $db = Typecho_Db::get();

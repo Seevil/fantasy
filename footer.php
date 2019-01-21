@@ -1,8 +1,6 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 <aside>
-<?php if ($this->options->random == 'disable'): ?>
 <div class="aside-left sidebar">
-
 	<h3>随机文章</h3>
 	<?php theme_random_posts();?>
 	<div class="clear">
@@ -16,7 +14,6 @@
 		<?php $this->widget('Widget_Metas_Category_List')->parse('<li><a href="{permalink}" class="">{name}<span> {count}篇</span></a></li>'); ?>
 	</ul>
 </div>
-<?php endif; ?>
 </aside><footer><span>© 2018 <?php $this->options->title(); ?> - <a href="<?php $this->options->feedUrl();?>"><?php Typecho_Widget::widget('Widget_Stat')->to($stat); ?><?php $stat->publishedPostsNum() ?> Posts crafted</a></span><span> ♥ <a href="https://blog.shuiba.co/bitcron-theme-hello">Hello</a> & <a href="https://github.com/PCDotFan/Aragaki">Aragaki</a> By <a href="https://www.xde.io/typecho/fantasy.html">Xingr</a></span>
 <div class="powered_by">
 	<span>Proudly published with</span>
