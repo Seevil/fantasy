@@ -27,7 +27,7 @@
 </head>
 <body>
 <div class="wrapper">
-	<header><a href="/" class="logo"><?php if($this->options->logoUrl): ?><img src="<?php $this->options->logoUrl();?>" alt="<?php $this->options->title() ?>" /><?php else : ?><img src="<?php $this->options->themeUrl('css/pic.png'); ?>"/><?php endif; ?></a>
+	<header><a href="<?php $this->options->siteUrl();?>" class="logo"><?php if($this->options->logoUrl): ?><img src="<?php $this->options->logoUrl();?>" alt="<?php $this->options->title() ?>" /><?php else : ?><img src="<?php $this->options->themeUrl('css/pic.png'); ?>"/><?php endif; ?></a>
 	<div class="description">
 		<h1><?php $this->options->title(); ?></h1>
 		<h2><?php $this->options->description() ?></h2>
@@ -36,7 +36,7 @@
 			<div class="bitcron_nav">
 				<div class="mixed_site_nav_wrap site_nav_wrap">
 					<ul class="mixed_site_nav site_nav sm sm-base">
-						<li><a  href="/" class="selected active current nav__item">首页</a></li>
+						<li><a  href="<?php $this->options->siteUrl();?>" class="selected active current nav__item">首页</a></li>
 						<?php $this->widget('Widget_Contents_Page_List')->parse('<li><a href="{permalink}" class="nav__item">{title}</a></li>'); ?>
 						<li><a href="<?php $this->options->feedUrl(); ?>" class=" nav__item">订阅</a></li>
 					</ul>
