@@ -26,6 +26,13 @@ function themeConfig($form) {
         'disable', _t('是否显示文章热度'), _t('默认禁止，启用则显示文章热度浏览数'));
     $form->addInput($eyeshow);
 
+    $useLinks = new Typecho_Widget_Helper_Form_Element_Radio('useLinks',
+    array('able' => _t('启用'),
+        'disable' => _t('禁止'),
+    ),
+    'disable', _t('友情链接插件'), _t('默认禁止，启用则会对<a href="http://www.imhan.com/archives/typecho-links/" target="_blank">Links</a>插件进行对接，该功能由<a href="https://www.sstype.com" target="_blank">野狼博客</a>提供'));
+    $form->addInput($useLinks);
+
 }
 
 function parseContent($obj){
