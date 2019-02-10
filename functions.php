@@ -33,6 +33,13 @@ function themeConfig($form) {
     'disable', _t('友情链接插件'), _t('默认禁止，启用则会对<a href="http://www.imhan.com/archives/typecho-links/" target="_blank">Links</a>插件进行对接，该功能由<a href="https://www.sstype.com" target="_blank">野狼博客</a>提供'));
     $form->addInput($useLinks);
 
+    $useInstantClick = new Typecho_Widget_Helper_Form_Element_Radio('useInstantClick',
+    array('able' => _t('启用'),
+        'disable' => _t('禁止'),
+    ),
+    'disable', _t('InstantClick加速技术'), _t('默认禁止，启用则会使用<a href="http://instantclick.io/" target="_blank">InstantClick</a>对网站进行加速，同时会增大服务器负载，该功能由<a href="https://www.sstype.com" target="_blank">野狼博客</a>提供'));
+    $form->addInput($useInstantClick);
+
 }
 
 function parseContent($obj){

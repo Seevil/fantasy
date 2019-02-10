@@ -122,6 +122,10 @@ $(function() {
     })
 });
 </script>
+<?php if ($this->options->useInstantClick == "able") { ?>
+<script src="<?php $this->options->themeUrl('css/instantclick.min.js'); ?>" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+<?php } ?>
 <?php $this->footer(); ?>
 </body>
 
