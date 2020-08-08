@@ -19,7 +19,7 @@
 				<?php $this->theNext('%s', '', array('title' => '', 'tagClass' => 'pre')); ?>
 
                 </section>
-                <?php $this->need('comments.php'); ?>
+                <?php $this->need('vcomments.php'); ?>
             </main>
         </div>
 <?php $this->need('footer.php'); ?>

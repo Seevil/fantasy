@@ -12,7 +12,8 @@ function themeConfig($form) {
         ),
         'disable', _t('代码高亮设置'), _t('默认禁止，启用则会对 ``` 进行代码高亮'));
     $form->addInput($useHighline);
-	
+	$sticky = new Typecho_Widget_Helper_Form_Element_Text('sticky', NULL,NULL, _t('文章置顶'), _t('置顶的文章cid，按照排序输入, 请以半角逗号或空格分隔'));
+    $form->addInput($sticky);
     $fontshow = new Typecho_Widget_Helper_Form_Element_Radio('fontshow',
         array('able' => _t('启用'),
             'disable' => _t('禁止'),
@@ -25,6 +26,12 @@ function themeConfig($form) {
         ),
         'disable', _t('是否显示文章热度'), _t('默认禁止，启用则显示文章热度浏览数'));
     $form->addInput($eyeshow);
+	$Emoji = new Typecho_Widget_Helper_Form_Element_Radio('Emoji',
+        array('able' => _t('启用'),
+            'disable' => _t('禁止'),
+        ),
+        'disable', _t('Emoji表情设置'), _t('默认显示Emoji表情，如果你的数据库charset配置不是utf8mb4请禁用'));
+    $form->addInput($Emoji);
 
 }
 
@@ -33,6 +40,7 @@ function parseContent($obj){
     if(!empty($options->src_add) && !empty($options->cdn_add)){
         $obj->content = str_ireplace($options->src_add,$options->cdn_add,$obj->content);
     }
+	$obj->content = preg_replace("/<a href=\"([^\"]*)\">/i", "<a href=\"\\1\" target=\"_blank\" rel=\"nofollow\">", $obj->content); //新标签页打开连接
     echo trim($obj->content);
 }
 
@@ -84,6 +92,47 @@ function getCommentAt($coid){
     }
 }
 
+/**
+ * 输出评论回复内容，配合 commentAtContent($coid)一起使用
+ * <?php showCommentContent($comments->coid); ?>
+ */
+function showCommentContent($coid)
+{
+    $db = Typecho_Db::get();
+    $result = $db->fetchRow($db->select('text')->from('table.comments')->where('coid = ? AND status = ?', $coid, 'approved'));
+    $text = $result['text'];
+    $atStr = commentAtContent($coid);
+    $_content = Markdown::convert($text);
+    //<p>
+    if ($atStr !== '') {
+        $content = substr_replace($_content, $atStr, 0, 3);
+    } else {
+        $content = $_content;
+    }
+
+    echo $content;
+}
+
+/**
+ * 评论回复加@ 
+ */
+function commentAtContent($coid)
+{
+    $db = Typecho_Db::get();
+    $prow = $db->fetchRow($db->select('parent')->from('table.comments')->where('coid = ? AND status = ?', $coid, 'approved'));
+    $parent = $prow['parent'];
+    if ($parent != "0") {
+        $arow = $db->fetchRow($db->select('author')->from('table.comments')
+            ->where('coid = ? AND status = ?', $parent, 'approved'));
+        $author = $arow['author'];
+        $href = '<p><a  href="#comment-' . $parent . '">@' . $author . '</a> ';
+        return $href;
+    } else {
+        return '';
+    }
+}
+
+
 //文章阅读次数含cookie
 function get_post_view($archive)
 {
@@ -112,6 +161,7 @@ array_push($views, $cid);
     }
     echo $row['views'];
 }
+
 
 //统计当前分类和子分类文章总数
 function fenleinum($id){
@@ -142,4 +192,158 @@ $r = number_format( $timetotal, $precision );
 if ( $display )
 echo $r;
 return $r;
+}
+
+
+/** 获取浏览器信息 <?php echo getBrowser($comments->agent); ?> */
+function getBrowser($agent)
+{ $outputer = false;
+    if (preg_match('/MSIE\s([^\s|;]+)/i', $agent, $regs)) {
+        $outputer = 'IE Browser';
+    } else if (preg_match('/FireFox\/([^\s]+)/i', $agent, $regs)) {
+      $str1 = explode('Firefox/', $regs[0]);
+$FireFox_vern = explode('.', $str1[1]);
+        $outputer = 'Firefox Browser '. $FireFox_vern[0];
+    } else if (preg_match('/Maxthon([\d]*)\/([^\s]+)/i', $agent, $regs)) {
+      $str1 = explode('Maxthon/', $agent);
+$Maxthon_vern = explode('.', $str1[1]);
+        $outputer = 'Maxthon Browser '.$Maxthon_vern[0];
+    } else if (preg_match('#SE 2([a-zA-Z0-9.]+)#i', $agent, $regs)) {
+        $outputer = 'Sogo Browser';
+    } else if (preg_match('#360([a-zA-Z0-9.]+)#i', $agent, $regs)) {
+$outputer = '360 Browser';
+    } else if (preg_match('/Edge([\d]*)\/([^\s]+)/i', $agent, $regs)) {
+        $str1 = explode('Edge/', $regs[0]);
+$Edge_vern = explode('.', $str1[1]);
+        $outputer = 'Edge '.$Edge_vern[0];
+    } else if (preg_match('/EdgiOS([\d]*)\/([^\s]+)/i', $agent, $regs)) {
+        $str1 = explode('EdgiOS/', $regs[0]);
+        $outputer = 'Edge';
+    } else if (preg_match('/UC/i', $agent)) {
+              $str1 = explode('rowser/',  $agent);
+$UCBrowser_vern = explode('.', $str1[1]);
+        $outputer = 'UC Browser '.$UCBrowser_vern[0];
+    }else if (preg_match('/OPR/i', $agent)) {
+              $str1 = explode('OPR/',  $agent);
+$opr_vern = explode('.', $str1[1]);
+        $outputer = 'Open Browser '.$opr_vern[0];
+    } else if (preg_match('/MicroMesseng/i', $agent, $regs)) {
+        $outputer = 'Weixin Browser';
+    }  else if (preg_match('/WeiBo/i', $agent, $regs)) {
+        $outputer = 'WeiBo Browser';
+    }  else if (preg_match('/QQ/i', $agent, $regs)||preg_match('/QQ Browser\/([^\s]+)/i', $agent, $regs)) {
+                  $str1 = explode('rowser/',  $agent);
+$QQ_vern = explode('.', $str1[1]);
+        $outputer = 'QQ Browser '.$QQ_vern[0];
+    } else if (preg_match('/MQBHD/i', $agent, $regs)) {
+                  $str1 = explode('MQBHD/',  $agent);
+$QQ_vern = explode('.', $str1[1]);
+        $outputer = 'QQ Browser '.$QQ_vern[0];
+    } else if (preg_match('/BIDU/i', $agent, $regs)) {
+        $outputer = 'Baidu Browser';
+    } else if (preg_match('/LBBROWSER/i', $agent, $regs)) {
+        $outputer = 'KS Browser';
+    } else if (preg_match('/TheWorld/i', $agent, $regs)) {
+        $outputer = 'TheWorld Browser';
+    } else if (preg_match('/XiaoMi/i', $agent, $regs)) {
+        $outputer = 'XiaoMi Browser';
+    } else if (preg_match('/UBrowser/i', $agent, $regs)) {
+              $str1 = explode('rowser/',  $agent);
+$UCBrowser_vern = explode('.', $str1[1]);
+        $outputer = 'UCBrowser '.$UCBrowser_vern[0];
+    } else if (preg_match('/mailapp/i', $agent, $regs)) {
+        $outputer = 'Email Browser';
+    } else if (preg_match('/2345Explorer/i', $agent, $regs)) {
+        $outputer = '2345 Browser';
+    } else if (preg_match('/Sleipnir/i', $agent, $regs)) {
+        $outputer = 'Sleipnir Browser';
+    } else if (preg_match('/YaBrowser/i', $agent, $regs)) {
+        $outputer = 'Yandex Browser';
+    }  else if (preg_match('/Opera[\s|\/]([^\s]+)/i', $agent, $regs)) {
+        $outputer = 'Opera Browser';
+    } else if (preg_match('/MZBrowser/i', $agent, $regs)) {
+        $outputer = 'MZ Browser';
+    } else if (preg_match('/VivoBrowser/i', $agent, $regs)) {
+        $outputer = 'Vivo Browser';
+    } else if (preg_match('/Quark/i', $agent, $regs)) {
+        $outputer = 'Quark Browser';
+    } else if (preg_match('/mixia/i', $agent, $regs)) {
+        $outputer = 'Mixia Browser';
+    }else if (preg_match('/fusion/i', $agent, $regs)) {
+        $outputer = 'Fusion';
+    } else if (preg_match('/CoolMarket/i', $agent, $regs)) {
+        $outputer = 'CoolMarket Browser';
+    } else if (preg_match('/Thunder/i', $agent, $regs)) {
+        $outputer = 'Thunder Browser';
+    } else if (preg_match('/Chrome([\d]*)\/([^\s]+)/i', $agent, $regs)) {
+$str1 = explode('Chrome/', $agent);
+$chrome_vern = explode('.', $str1[1]);
+        $outputer = 'Chrome '.$chrome_vern[0];
+    } else if (preg_match('/safari\/([^\s]+)/i', $agent, $regs)) {
+         $str1 = explode('Version/',  $agent);
+$safari_vern = explode('.', $str1[1]);
+        $outputer = 'Safari '.$safari_vern[0];
+    } else{
+        return false;
+    }
+   return $outputer;
+}
+
+/** 获取操作系统信息 <?php echo getOs($comments->agent); ?>*/
+function getOs($agent)
+{
+    $os = false;
+ 
+    if (preg_match('/win/i', $agent)) {
+        if (preg_match('/nt 6.0/i', $agent)) {
+            $os = 'Windows Vista';
+        } else if (preg_match('/nt 6.1/i', $agent)) {
+            $os = 'Windows 7';
+        } else if (preg_match('/nt 6.2/i', $agent)) {
+            $os = 'Windows 8';
+        } else if(preg_match('/nt 6.3/i', $agent)) {
+            $os = 'Windows 8.1';
+        } else if(preg_match('/nt 5.1/i', $agent)) {
+            $os = 'Windows XP';
+        } else if (preg_match('/nt 10.0/i', $agent)) {
+            $os = 'Windows 10';
+        } else{
+            $os = 'Windows';
+        }
+    } else if (preg_match('/android/i', $agent)) {
+if (preg_match('/android 9/i', $agent)) {
+        $os = 'Android P';
+    }
+else if (preg_match('/android 8/i', $agent)) {
+        $os = 'Android O';
+    }
+else if (preg_match('/android 7/i', $agent)) {
+        $os = 'Android N';
+    }
+else if (preg_match('/android 6/i', $agent)) {
+        $os = 'Android M';
+    }
+else if (preg_match('/android 5/i', $agent)) {
+        $os = 'Android L';
+    }
+else{
+        $os = 'Android';
+}
+    }
+ else if (preg_match('/ubuntu/i', $agent)) {
+        $os = 'Linux';
+    } else if (preg_match('/linux/i', $agent)) {
+        $os = 'Linux';
+    } else if (preg_match('/iPhone/i', $agent)) {
+        $os = 'iPhone';
+    } else if (preg_match('/iPad/i', $agent)) {
+        $os = 'iPad';
+    } else if (preg_match('/mac/i', $agent)) {
+        $os = 'OSX';
+    }else if (preg_match('/cros/i', $agent)) {
+        $os = 'Chrome os';
+    }else {
+ return false;
+    }
+   return $os;
 }
