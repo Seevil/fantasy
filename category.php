@@ -16,11 +16,13 @@ $this->need('header.php');
 					<?php endwhile; ?>
                     </ul>
                 </section>
-                <section class="pager">
-                    <div class="paginator pager pagination no_pages">
-                        <div class="paginator_container pagination_container"></div>
-                    </div>
-                </section>
+				<section class="list-pager">
+	<?php $this->pageLink('<i class="iconfont icon-left"></i> 上一页'); ?>
+	<?php $this->pageLink('下一页<i class="iconfont icon-right"></i>','next'); ?>
+	<div class="clear">
+	</div>
+	</section>
+                
             </main>
         </div>
 <?php $this->need('footer.php'); ?>
