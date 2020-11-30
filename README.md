@@ -7,6 +7,10 @@
 
 ![screenshot](screenshot.png)
 
+>1.4.0 更新细节及友情链接设置方法见：
+
+https://www.xde.io/typecho/fantasy-1-4-0.html
+
 # License
 
 
