@@ -4,9 +4,9 @@
  * 经作者同意由BITCRON博客Aragaki主题移植而来。
  * 又改名为Fantasy取义“清梦”源自“ 醉后不知天在水，满船清梦压星河。” 意图用来描绘现状。
  * @package Fantasy Theme
- * @author Intern
- * @version 1.4.0
- * @link https://wwww.xde.io/
+ * @author Xingr
+ * @version 1.4.1
+ * @link https://www.krsay.com/
  */
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 $this->need('header.php');
@@ -18,6 +18,7 @@ if($sticky && $this->is('index') || $this->is('front')){
     $pageSize = $this->options->pageSize;
     $select1 = $this->select()->where('type = ?', 'post');
     $select2 = $this->select()->where('type = ? && status = ? && created < ?', 'post','publish',time());
+    //清空原有文章的列队
     $this->row = [];
     $this->stack = [];
     $this->length = 0;
@@ -26,18 +27,20 @@ if($sticky && $this->is('index') || $this->is('front')){
         if($i == 0) $select1->where('cid = ?', $cid);
         else $select1->orWhere('cid = ?', $cid);
         $order .= " when $cid then $i";
-        $select2->where('table.contents.cid != ?', $cid);
+        $select2->where('table.contents.cid != ?', $cid); //避免重复
     }
-    if ($order) $select1->order(null,"(case cid$order end)");
-    if ($this->_currentPage == 1) foreach($db->fetchAll($select1) as $sticky_post){ 
+    if ($order) $select1->order('', "(case cid$order end)"); //置顶文章的顺序 按 $sticky 中 文章ID顺序
+    if (($this->_currentPage || $this->currentPage) == 1) foreach($db->fetchAll($select1) as $sticky_post){ //首页第一页才显示
         $sticky_post['sticky'] = $sticky_html;
-        $this->push($sticky_post);
+        $this->push($sticky_post); //压入列队
     }
-$uid = $this->user->uid; 
-    if($uid) $select2->orWhere('authorId = ? && status = ?',$uid,'private');
+    if($this->user->hasLogin()){
+    $uid = $this->user->uid; //登录时，显示用户各自的私密文章
+    if($uid) $select2->orWhere('authorId = ? && status = ?', $uid, 'private');
+    }
     $sticky_posts = $db->fetchAll($select2->order('table.contents.created', Typecho_Db::SORT_DESC)->page($this->_currentPage, $this->parameter->pageSize));
-    foreach($sticky_posts as $sticky_post) $this->push($sticky_post); 
-    $this->setTotal($this->getTotal()-count($sticky_cids)); 
+    foreach($sticky_posts as $sticky_post) $this->push($sticky_post); //压入列队
+    $this->setTotal($this->getTotal()-count($sticky_cids)); //置顶文章不计算在所有文章内
 }
 ?>
 	<main>
