@@ -14,7 +14,7 @@
 		<?php $this->widget('Widget_Metas_Category_List')->parse('<li><a href="{permalink}" class="">{name}<span> {count}篇</span></a></li>'); ?>
 	</ul>
 </div>
-</aside><footer><span>© <?php echo date('Y'); ?> <?php $this->options->title(); ?> - <a href="<?php $this->options->feedUrl();?>"><?php Typecho_Widget::widget('Widget_Stat')->to($stat); ?><?php $stat->publishedPostsNum() ?> Posts crafted</a></span><span> ♥  <a href="https://github.com/PCDotFan/Aragaki">Aragaki</a> By <a href="https://www.xde.io/typecho/fantasy.html">Xingr</a></span>
+</aside><footer><span>© <?php echo date('Y'); ?> <?php $this->options->title(); ?> - <a href="<?php $this->options->feedUrl();?>"><?php Typecho_Widget::widget('Widget_Stat')->to($stat); ?><?php $stat->publishedPostsNum() ?> Posts crafted</a></span><span> ♥  <a href="https://github.com/PCDotFan/Aragaki">Aragaki</a> By <a href="https://www.krsay.com/typecho/fantasy.html">Fantasy</a></span>
 <div class="powered_by">
 	<span>Proudly published with</span>
 	<a href="http://typecho.org/" target="_blank">Typecho</a>
@@ -24,8 +24,8 @@
 </footer>
 <link rel="stylesheet" href="<?php $this->options->themeUrl('css/fonts.css'); ?>">
 <?php if ($this->is('post') || $this->is('page') && $this->options->useHighline == 'able'): ?>
-<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.1/build/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 <?php endif; ?>
 <style type="text/css">
 a.back_to_top{text-decoration:none;position:fixed;bottom:40px;right:30px;background:#f0f0f0;height:40px;width:40px;border-radius:50%;line-height:36px;font-size:18px;text-align:center;transition-duration:.5s;transition-propety:background-color;display:none}a.back_to_top span{color:#888}a.back_to_top:hover{cursor:pointer;background:#dfdfdf}a.back_to_top:hover span{color:#555}@media print,screen and (max-width:580px){.back_to_top{display:none!important}}
