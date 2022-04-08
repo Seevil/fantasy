@@ -15,7 +15,7 @@ function threadedComments($comments, $options) {
     $commentLevelClass = $comments->levels > 0 ? ' comment-child' : ' comment-parent';
 ?>
 <?php
-            $host = 'https://gravatar.loli.net'; 
+            $host = 'https://sdn.geekzu.org'; 
             $url = '/avatar/'; 
             $rating = Helper::options()->commentsAvatarRating;
             $hash = md5(strtolower($comments->mail));
@@ -39,6 +39,7 @@ function threadedComments($comments, $options) {
 					</div>
 					<div class="vcontent">
 						<p>
+						<?php if ('waiting' == $comments->status): ?><div class="comment-waiting">您的评论需管理员审核后才能显示！</div><?php endif; ?>
 							<?php showCommentContent($comments->coid); ?>
 						</p>
 					</div>

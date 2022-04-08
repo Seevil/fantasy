@@ -74,24 +74,6 @@ echo str_replace(array('{permalink}', '{title}'),array($val['permalink'], $val['
 echo $defaults['after'];
 }
 
-function getCommentAt($coid){
-    $db   = Typecho_Db::get();
-    $prow = $db->fetchRow($db->select('parent')
-        ->from('table.comments')
-        ->where('coid = ? AND status = ?', $coid, 'approved'));
-    $parent = $prow['parent'];
-    if ($parent != "0") {
-        $arow = $db->fetchRow($db->select('author')
-            ->from('table.comments')
-            ->where('coid = ? AND status = ?', $parent, 'approved'));
-        $author = $arow['author'];
-        $href   = '<a href="#comment-'.$parent.'">@'.$author.'</a>';
-        echo $href;
-    } else {
-        echo '';
-    }
-}
-
 /**
  * 输出评论回复内容，配合 commentAtContent($coid)一起使用
  * <?php showCommentContent($comments->coid); ?>
@@ -99,7 +81,7 @@ function getCommentAt($coid){
 function showCommentContent($coid)
 {
     $db = Typecho_Db::get();
-    $result = $db->fetchRow($db->select('text')->from('table.comments')->where('coid = ? AND status = ?', $coid, 'approved'));
+    $result = $db->fetchRow($db->select('text')->from('table.comments')->where('coid = ? AND (status = ? OR status = ?)', $coid, 'approved','waiting'));
     $text = $result['text'];
     $atStr = commentAtContent($coid);
     $_content = Markdown::convert($text);
@@ -119,11 +101,11 @@ function showCommentContent($coid)
 function commentAtContent($coid)
 {
     $db = Typecho_Db::get();
-    $prow = $db->fetchRow($db->select('parent')->from('table.comments')->where('coid = ? AND status = ?', $coid, 'approved'));
+    $prow = $db->fetchRow($db->select('parent')->from('table.comments')->where('coid = ? AND (status = ? OR status = ?)', $coid, 'approved','waiting'));
     $parent = $prow['parent'];
     if ($parent != "0") {
         $arow = $db->fetchRow($db->select('author')->from('table.comments')
-            ->where('coid = ? AND status = ?', $parent, 'approved'));
+            ->where('coid = ? AND (status = ? OR status = ?)', $parent, 'approved','waiting'));
         $author = $arow['author'];
         $href = '<p><a  href="#comment-' . $parent . '">@' . $author . '</a> ';
         return $href;
@@ -295,8 +277,8 @@ function getOs($agent)
     $os = false;
  
     if (preg_match('/win/i', $agent)) {
-        if (preg_match('/nt 6.0/i', $agent)) {
-            $os = 'Windows Vista';
+        if (preg_match('/nt 10.0/i', $agent)) {
+            $os = 'Windows 10';
         } else if (preg_match('/nt 6.1/i', $agent)) {
             $os = 'Windows 7';
         } else if (preg_match('/nt 6.2/i', $agent)) {
@@ -305,33 +287,33 @@ function getOs($agent)
             $os = 'Windows 8.1';
         } else if(preg_match('/nt 5.1/i', $agent)) {
             $os = 'Windows XP';
-        } else if (preg_match('/nt 10.0/i', $agent)) {
-            $os = 'Windows 10';
+        } else if (preg_match('/nt 6.0/i', $agent)) {
+            $os = 'Windows Vista';
         } else{
-            $os = 'Windows';
+            $os = 'Windows 11';
         }
     } else if (preg_match('/android/i', $agent)) {
-if (preg_match('/android 9/i', $agent)) {
-        $os = 'Android P';
+    if (preg_match('/android 11/i', $agent)) {
+            $os = 'Android R';
+        }
+    else if (preg_match('/android 12/i', $agent)) {
+            $os = 'Android 12';
+        }
+    else if (preg_match('/android 10/i', $agent)) {
+            $os = 'Android Q';
+        }
+    else if (preg_match('/android 9/i', $agent)) {
+            $os = 'Android P';
+        }
+    else if (preg_match('/android 8/i', $agent)) {
+            $os = 'Android O';
+        }
+    else{
+            $os = 'Android';
     }
-else if (preg_match('/android 8/i', $agent)) {
-        $os = 'Android O';
-    }
-else if (preg_match('/android 7/i', $agent)) {
-        $os = 'Android N';
-    }
-else if (preg_match('/android 6/i', $agent)) {
-        $os = 'Android M';
-    }
-else if (preg_match('/android 5/i', $agent)) {
-        $os = 'Android L';
-    }
-else{
-        $os = 'Android';
-}
     }
  else if (preg_match('/ubuntu/i', $agent)) {
-        $os = 'Linux';
+        $os = 'ubuntu';
     } else if (preg_match('/linux/i', $agent)) {
         $os = 'Linux';
     } else if (preg_match('/iPhone/i', $agent)) {

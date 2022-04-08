@@ -5,7 +5,7 @@
  * 又改名为Fantasy取义“清梦”源自“ 醉后不知天在水，满船清梦压星河。” 意图用来描绘现状。
  * @package Fantasy Theme
  * @author Xingr
- * @version 1.4.1
+ * @version 1.4.2
  * @link https://www.krsay.com/
  */
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
@@ -52,7 +52,7 @@ if($sticky && $this->is('index') || $this->is('front')){
 		<p><?php $this->excerpt();?></p>
 	</div>
 	<div class="meta">
-		<span class="item"><i class="iconfont icon-calendar"></i><time datetime="<?php $this->date(); ?>"><?php $this->date('Y.m.d '); ?></time></span>
+		<span class="item"><i class="iconfont icon-calendar"></i><time datetime="<?php $this->date(); ?>"> <?php $this->date('Y.m.d '); ?></time></span>
 		<span class="item"><i class="iconfont icon-tag"></i><?php $this->category(''); ?></span>
 		<span class="item"><i class="iconfont icon-message"></i><a href="<?php $this->permalink() ?>#comments"><?php $this->commentsNum('0 评', '1 评', '%d 评'); ?></a></span>
 	</div>
