@@ -15,7 +15,7 @@ function threadedComments($comments, $options) {
     $commentLevelClass = $comments->levels > 0 ? ' comment-child' : ' comment-parent';
 ?>
 <?php
-            $host = 'https://sdn.geekzu.org'; 
+            $host = 'https://cravatar.cn'; 
             $url = '/avatar/'; 
             $rating = Helper::options()->commentsAvatarRating;
             $hash = md5(strtolower($comments->mail));
