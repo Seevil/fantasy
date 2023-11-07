@@ -45,11 +45,11 @@ $this->need('header.php');
                                 }?>
                         </div>
                     </div>
-                    
+                    <div class="link_body links reward_none">
                         <div class="meta-links">
                                 <?php $this->content(); ?> 
                         </div>
-                    
+                    </div>
                 </div>
                     
                 </article>
@@ -188,4 +188,5 @@ $this->need('header.php');
             float:initial; 
         }
 </style>
+<?php $this->need('vcomments.php'); ?>
 <?php $this->need('footer.php'); ?>
