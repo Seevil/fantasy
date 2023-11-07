@@ -75,6 +75,18 @@ echo $defaults['after'];
 }
 
 /**
+     * 判断插件是否可用
+     * 
+     * @return bool
+     */
+    function isPluginAvailable($name) 
+    {
+        $plugins = Typecho_Plugin::export();
+        $plugins = $plugins['activated'];
+        return is_array($plugins) && array_key_exists($name, $plugins);
+    }
+
+/**
  * 输出评论回复内容，配合 commentAtContent($coid)一起使用
  * <?php showCommentContent($comments->coid); ?>
  */
